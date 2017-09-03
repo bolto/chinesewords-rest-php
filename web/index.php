@@ -10,8 +10,9 @@ $userIdConverter = function ($id) {
     // you can easily define any converter
     // and assign it to a variable,
     // then pass this variable to be used
-    // in the converter.
-    return (int)$id + 2;
+    // in the converter. Adding 0 to not alter the value
+    // but this shows how you can write converter.
+    return (int)$id + 0;
 };
 
 //annon's code
@@ -21,11 +22,30 @@ $userIdConverter = function ($id) {
 //and actual json response code does not need to be concerned
 //with conversion.  this is good abstraction.
 $app['debug'] = true;
-$app->get('/test/{id}', function ($id){
-    // note the function ($id) can also
-    // be defined to cast input variable to a class instance
-    // eg: function (User $user)
-    return "hello: $id.";
+
+
+// setting up database connection
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver'   => 'pdo_mysql',
+        'host'     => 'localhost',
+        'user'     => 'root',
+        'password' => 'peichieh',
+        'dbname'   => 'test',
+        'charset'  => 'utf8'
+    ),
+));
+
+// set up routing for test/id
+$app->get('/test/{id}', function ($id) use ($app) {
+    // finds the record from the database matching supplied id
+    $sql = "SELECT * FROM test_table WHERE id = ?";
+    $test = $app['db']->fetchAssoc($sql, array((int) $id));
+
+    // return record in json format
+    if ($test == false)
+        return $app->json(array("error", "no record found."));
+    return $app->json($test);
 })->convert('id', $userIdConverter);
 
 require __DIR__.'/../config/prod.php';
