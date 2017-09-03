@@ -48,6 +48,17 @@ $app->get('/test/{id}', function ($id) use ($app) {
     return $app->json($test);
 })->convert('id', $userIdConverter);
 
+$app->get('/test/', function () use ($app) {
+    // finds the record from the database matching supplied id
+    $sql = "SELECT * FROM test_table";
+    $tests = $app['db']->fetchAll($sql);
+
+    // return record in json format
+    if ($tests == false)
+        return $app->json(array("error", "no record found."));
+    return $app->json($tests);
+});
+
 require __DIR__.'/../config/prod.php';
 require __DIR__.'/../src/controllers.php';
 $app->run();
