@@ -1,4 +1,5 @@
 <?php
+namespace CWRest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserConverter
