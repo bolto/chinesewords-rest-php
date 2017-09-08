@@ -34,8 +34,8 @@ class RoutesLoader
 
     public function bindRoutesToControllers()
     {
-        $api = $this->app["controllers_factory"];
         foreach ($this->serviceNames as $service) {
+            $api = $this->app["controllers_factory"];
             $api->get('/', $service . ".controller:getAll");
             $api->get('/{id}', $service . ".controller:getOne");
             $api->post('/', $service . ".controller:save");

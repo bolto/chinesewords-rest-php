@@ -50,7 +50,7 @@ $app->register(new MonologServiceProvider(), array(
 ));
 
 // list of services to load
-$service_names = ["word"];
+$service_names = ["wordlist", "word", "test", "profile", "assignment"];
 
 // custom load services start
 $servicesLoader = new ServicesLoader($app, $service_names);
