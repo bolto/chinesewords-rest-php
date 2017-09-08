@@ -11,8 +11,9 @@ $app['db.options'] = array(
         'host'     => 'localhost',
         'user'     => 'root',
         'password' => 'peichieh',
-        'dbname'   => 'test',
-        'charset'  => 'utf8'
+        'dbname'   => 'chinesewords',
+        'charset'  => 'UTF8'
+  //'driverOptions'  => array('1002'=> "SET NAMES 'UTF8' COLLATE 'utf8_general_ci'")
 );
 
 $app['api.version'] = "v1";

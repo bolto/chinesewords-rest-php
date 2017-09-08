@@ -13,6 +13,7 @@ use Silex\Provider\HttpFragmentServiceProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\Response;
 
 
 //$app = new Application();
@@ -20,7 +21,7 @@ date_default_timezone_set('Europe/London');
 
 //accepting JSON
 $app->before(function (Request $request) {
-    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+    if (0 === strpos($request->headers->get('Content-Type'.'; charset=UTF-8'), 'application/json')) {
         $data = json_decode($request->getContent(), true);
         $request->request->replace(is_array($data) ? $data : array());
     }
@@ -48,13 +49,16 @@ $app->register(new MonologServiceProvider(), array(
     "monolog.name" => "application"
 ));
 
+// list of services to load
+$service_names = ["word"];
+
 // custom load services start
-$servicesLoader = new ServicesLoader($app);
+$servicesLoader = new ServicesLoader($app, $service_names);
 $servicesLoader->bindServicesIntoContainer();
 // custom load services end
 
 // custom load routes start
-$routesLoader = new RoutesLoader($app);
+$routesLoader = new RoutesLoader($app, $service_names);
 $routesLoader->bindRoutesToControllers();
 // custom load routes end
 
@@ -64,4 +68,14 @@ $app->error(function (\Exception $e, $code) use ($app) {
     return new JsonResponse(array("statusCode" => $code, "message" => $e->getMessage(), "stacktrace" => $e->getTraceAsString()));
 });
 
+$app->after(
+    function (Request $request, Response $response) {
+        $response->headers->set('Content-Type', $response->headers->get('Content-Type') . '; charset=UTF-8');
+
+        if ($response instanceof JsonResponse) {
+            $response->setEncodingOptions(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        }
+        return $response;
+    }
+);
 return $app;

@@ -7,36 +7,41 @@
  */
 
 namespace CWRest;
-use CWRest\Services\TestController;
+
 use Silex\Application;
 
 class RoutesLoader
 {
     private $app;
+    private $serviceNames;
 
-    public function __construct(Application $app)
+    public function __construct(Application $app, array $serviceNames)
     {
         $this->app = $app;
+        $this->serviceNames = $serviceNames;
         $this->instantiateControllers();
     }
 
-    private function instantiateControllers()
+    public function instantiateControllers()
     {
-        $this->app['test.controller'] = function() {
-            return new TestController($this->app['test.service']);
-        };
+        foreach ($this->serviceNames as $serviceName) {
+            $this->app[$serviceName . '.controller'] = function() use ($serviceName) {
+                $controllerClassName = 'CWRest\Services\\' . ucfirst($serviceName) . 'Controller';
+                return new $controllerClassName($this->app[$serviceName . '.service']);
+            };
+        }
     }
 
     public function bindRoutesToControllers()
     {
         $api = $this->app["controllers_factory"];
-
-        $api->get('/', "test.controller:getAll");
-        $api->get('/{id}', "test.controller:getOne");
-        $api->post('/', "test.controller:save");
-        $api->put('/{id}', "test.controller:update");
-        $api->delete('/{id}', "test.controller:delete");
-        //$this->app->mount('/test/', $api);
-        $this->app->mount($this->app["api.endpoint"].'/'.$this->app["api.version"]."/test", $api);
+        foreach ($this->serviceNames as $service) {
+            $api->get('/', $service . ".controller:getAll");
+            $api->get('/{id}', $service . ".controller:getOne");
+            $api->post('/', $service . ".controller:save");
+            $api->put('/{id}', $service . ".controller:update");
+            $api->delete('/{id}', $service . ".controller:delete");
+            $this->app->mount($this->app["api.endpoint"] . '/' . $this->app["api.version"] . "/" . $service, $api);
+        }
     }
 }
