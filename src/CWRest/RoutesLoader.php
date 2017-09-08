@@ -30,6 +30,11 @@ class RoutesLoader
                 return new $controllerClassName($this->app[$serviceName . '.service']);
             };
         }
+        $serviceName = "wordlistword";
+        $this->app[$serviceName . '.controller'] = function() use ($serviceName) {
+            $controllerClassName = 'CWRest\Services\\' . 'WordlistWord' . 'Controller';
+            return new $controllerClassName($this->app[$serviceName . '.service']);
+        };
     }
 
     public function bindRoutesToControllers()
@@ -43,5 +48,10 @@ class RoutesLoader
             $api->delete('/{id}', $service . ".controller:delete");
             $this->app->mount($this->app["api.endpoint"] . '/' . $this->app["api.version"] . "/" . $service, $api);
         }
+        $service = "wordlistword";
+        $api = $this->app["controllers_factory"];
+        $api->get('/{id}/word', $service . ".controller:getAll");
+        $api->get('/{id1}/word/{id2}', $service . ".controller:getOne");
+        $this->app->mount($this->app["api.endpoint"] . '/' . $this->app["api.version"] . "/" . "wordlist", $api);
     }
 }

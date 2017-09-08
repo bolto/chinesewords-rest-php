@@ -29,7 +29,11 @@ class ServicesLoader
             $this->app[$service . '.service'] = function() use ($className) {
                 return new $className($this->app["db"]);
             };
-
         }
+        $service = 'wordlistword';
+        $className = 'CWRest\Services\\' . 'WordlistWord' . "Service";
+        $this->app[$service . '.service'] = function() use ($className) {
+            return new $className($this->app["db"]);
+        };
     }
 }
