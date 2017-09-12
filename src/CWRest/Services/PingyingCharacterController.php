@@ -9,7 +9,7 @@
 namespace CWRest\Services;
 
 
-class TestController extends ControllerBase
+class PingyingCharacterController extends ControllerBase
 {
     public function __construct($service)
     {

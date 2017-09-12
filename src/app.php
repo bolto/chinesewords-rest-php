@@ -32,7 +32,7 @@ $app->register(new AssetServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 $app['twig'] = $app->extend('twig', function ($twig, $app) {
-    // add custom globals, filters, tags, ...
+    // add custom globals, filters, tags, ...  Ab178598001
 
     return $twig;
 });
@@ -50,7 +50,7 @@ $app->register(new MonologServiceProvider(), array(
 ));
 
 // list of services to load
-$service_names = ["wordlist", "word", "test", "profile", "assignment"];
+$service_names = ["wordlist", "word", "test", "profile", "assignment", "tone", "pingying", "pingying_character", ["word", "pingying"], ["wordlist", "word"], ["test", "wordlist"]];
 
 // custom load services start
 $servicesLoader = new ServicesLoader($app, $service_names);

@@ -13,7 +13,6 @@ class AssignmentController extends ControllerBase
 {
     public function __construct($service)
     {
-        $this->apiRoot = "assignment";
         parent::__construct($service);
     }
 }

@@ -12,19 +12,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ControllerBase
 {
-    protected $apiRoot;
     protected $dataService;
 
     public function __construct($dataService)
     {
         $this->dataService = $dataService;
-    }
-
-    public function getApiRoot()
-    {
-        if ($this->apiRoot == null || $this->apiRoot =="")
-            throw new Exception("ControllerBase's child class instance's api root must be declared.");
-        return $this->apiRoot;
     }
 
     public function getOne($id)
@@ -53,12 +45,5 @@ class ControllerBase
     public function delete($id)
     {
         return new JsonResponse($this->dataService->delete($id));
-    }
-
-    public function getDataFromRequest(Request $request)
-    {
-        return $object = array(
-            $this->getApiRoot() => $request->request->get($this->getApiRoot())
-        );
     }
 }

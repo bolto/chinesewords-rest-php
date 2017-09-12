@@ -12,7 +12,6 @@ class WordlistWordController extends ControllerCustom
 {
     public function __construct($service)
     {
-        $this->apiRoot = "wordlist";
         parent::__construct($service);
     }
 }

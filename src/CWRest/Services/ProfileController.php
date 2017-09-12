@@ -13,7 +13,6 @@ class ProfileController extends ControllerBase
 {
     public function __construct($service)
     {
-        $this->apiRoot = "profile";
         parent::__construct($service);
     }
 }

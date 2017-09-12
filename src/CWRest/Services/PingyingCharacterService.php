@@ -9,13 +9,18 @@
 namespace CWRest\Services;
 
 
-class WordlistService extends ServiceBase
+class PingyingCharacterService extends ServiceBase
 {
     protected $db;
 
     public function __construct($db)
     {
-        $this->table_name = "wordlist";
+        $this->table_name = "pingying_character";
         parent::__construct($db);
+    }
+    public function getAll($limit = 0)
+    {
+
+        return parent::getAll($limit);
     }
 }

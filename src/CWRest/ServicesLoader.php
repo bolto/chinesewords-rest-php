@@ -13,27 +13,26 @@ use Silex\Application;
 class ServicesLoader
 {
     protected $app;
-    protected $service_names;
+    protected $serviceNames;
 
-    public function __construct(Application $app, array $service_names)
+    public function __construct(Application $app, array $serviceNames)
     {
         $this->app = $app;
-        $this->service_names = $service_names;
+        $this->serviceNames = $serviceNames;
     }
 
     public function bindServicesIntoContainer()
     {
-        foreach ($this->service_names as $service)
-        {
-            $className = 'CWRest\Services\\' . ucfirst($service) . "Service";
-            $this->app[$service . '.service'] = function() use ($className) {
-                return new $className($this->app["db"]);
+        foreach ($this->serviceNames as $service) {
+            $tableRestApiMeta = new TableRestApiMeta($service);
+            if (count($service)> 2){
+                throw new Exception(
+                    "Chained resources of 3 or more is not supported yet.  Resources: " . implode(", ", $service));
+            }
+            $this->app[$tableRestApiMeta->getServiceAppKey()] = function () use ($tableRestApiMeta) {
+                $serviceClassName = $tableRestApiMeta->getServiceClassName();
+                return new $serviceClassName($this->app["db"]);
             };
         }
-        $service = 'wordlistword';
-        $className = 'CWRest\Services\\' . 'WordlistWord' . "Service";
-        $this->app[$service . '.service'] = function() use ($className) {
-            return new $className($this->app["db"]);
-        };
     }
 }

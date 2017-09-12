@@ -8,8 +8,7 @@
 
 namespace CWRest\Services;
 
-
-class TestController extends ControllerBase
+class TestWordlistController extends ControllerCustom
 {
     public function __construct($service)
     {
