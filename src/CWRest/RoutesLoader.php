@@ -74,7 +74,7 @@ class RoutesLoader
                 $suffix .= "/{id" . (($size > 1)? (string)($index+1):"") . "}";
             }
         }
-        return $suffix . "/";
+        return $suffix;
     }
 
     /**
@@ -110,16 +110,24 @@ class RoutesLoader
             {
                 $api = $this->app["controllers_factory"];
                 $api->get('/', "$controllerAppKey:getAll");
+                $api->get('', "$controllerAppKey:getAll");
                 $api->get('/{id}', "$controllerAppKey:getOne");
                 $api->get('/{id}/', "$controllerAppKey:getOne");
                 $api->post('/', "$controllerAppKey:save");
+                $api->post('', "$controllerAppKey:save");
                 $api->put('/{id}', "$controllerAppKey:update");
                 $api->delete('/{id}', "$controllerAppKey:delete");
                 $this->app->mount($this->getRestApiVersionUriSuffix() . $service, $api);
             }else{
-                $api = $this->app["controllers_factory"];
-                $api->get($this->createGetAllApiResourceSuffix($service), "$controllerAppKey:getAll");
-                $api->get($this->createGetOneApiResourceSuffix($service), "$controllerAppKey:getOne");
+                $getOneApiResourceUrl = $this->createGetOneApiResourceSuffix($service);
+                $getAllApiResourceUrl = $this->createGetAllApiResourceSuffix($service);
+                $api->get($getAllApiResourceUrl, "$controllerAppKey:getAll");
+                $api->get($getAllApiResourceUrl . "/", "$controllerAppKey:getAll");
+                $api->get($getOneApiResourceUrl, "$controllerAppKey:getOne");
+                $api->post($getAllApiResourceUrl, "$controllerAppKey:save");
+                $api->post($getAllApiResourceUrl . "/", "$controllerAppKey:save");
+                $api->put($getOneApiResourceUrl, "$controllerAppKey:associate");
+                $api->delete($getOneApiResourceUrl, "$controllerAppKey:delete");
                 $this->app->mount($this->getRestApiVersionUriSuffix() . $service[0], $api);
             }
         }

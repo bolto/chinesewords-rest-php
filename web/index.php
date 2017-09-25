@@ -1,5 +1,4 @@
 <?php
-
 use CWRest\Services\TestController;
 use CWRest\Services\TestControllerProvider;
 

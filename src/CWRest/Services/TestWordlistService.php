@@ -16,6 +16,7 @@ class TestWordlistService extends ServiceCustom
     public function __construct($db)
     {
         parent::__construct($db);
+        $this->table_name = "test_wordlist";
         $this->selectOneQuery =
             "SELECT * "
             . "FROM wordlist wl "
@@ -26,5 +27,15 @@ class TestWordlistService extends ServiceCustom
             . "FROM wordlist wl "
             . "  INNER JOIN test_wordlist tw ON wl.id = tw.wordlist_id "
             . "WHERE tw.test_id = ?";
+    }
+
+    function associate($id1, $id2)
+    {
+        $this->db->insert($this->getTableName(), ["test_id"=>$id1, "wordlist_id"=>$id2]);
+        return $this->db->lastInsertId();
+    }
+    function delete($id1, $id2)
+    {
+        return $this->db->delete($this->getTableName(), ["test_id"=>$id1, "wordlist_id"=>$id2]);
     }
 }

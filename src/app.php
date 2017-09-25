@@ -1,5 +1,4 @@
 <?php
-
 use CWRest\ServicesLoader;
 use CWRest\RoutesLoader;
 use Silex\Application;
@@ -71,7 +70,8 @@ $app->error(function (\Exception $e, $code) use ($app) {
 $app->after(
     function (Request $request, Response $response) {
         $response->headers->set('Content-Type', $response->headers->get('Content-Type') . '; charset=UTF-8');
-
+        //$response->headers->set('Access-Control-Allow-Headers', 'x-requested-with, x-file-name, x-index, x-total, x-hash, Content-Type, origin, authorization, accept, client-security-token');
+        //$response->headers->set('Access-Control-Allow-Origin', '*');
         if ($response instanceof JsonResponse) {
             $response->setEncodingOptions(JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         }

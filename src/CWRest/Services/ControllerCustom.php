@@ -43,4 +43,14 @@ class ControllerCustom
     {
         return new JsonResponse($this->dataService->getAll($id1));
     }
+
+    public function associate($id1, $id2)
+    {
+        return new JsonResponse($this->dataService->associate($id1, $id2));
+    }
+
+    public function delete($id1, $id2)
+    {
+        return new JsonResponse($this->dataService->delete($id1, $id2));
+    }
 }
