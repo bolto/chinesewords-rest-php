@@ -11,8 +11,6 @@ namespace CWRest\Services;
 
 class TestWordlistService extends ServiceCustom
 {
-    protected $db;
-
     public function __construct($db)
     {
         parent::__construct($db);

@@ -106,9 +106,9 @@ class RoutesLoader
         foreach ($this->serviceNames as $service) {
             $tableRestApiMeta = new TableRestApiMeta($service);
             $controllerAppKey = $tableRestApiMeta->getControllerAppKey();
+            $api = $this->app["controllers_factory"];
             if (!is_array($service))
             {
-                $api = $this->app["controllers_factory"];
                 $api->get('/', "$controllerAppKey:getAll");
                 $api->get('', "$controllerAppKey:getAll");
                 $api->get('/{id}', "$controllerAppKey:getOne");
@@ -128,7 +128,8 @@ class RoutesLoader
                 $api->post($getAllApiResourceUrl . "/", "$controllerAppKey:save");
                 $api->put($getOneApiResourceUrl, "$controllerAppKey:associate");
                 $api->delete($getOneApiResourceUrl, "$controllerAppKey:delete");
-                $this->app->mount($this->getRestApiVersionUriSuffix() . $service[0], $api);
+                $serviceRoot = $this->getRestApiVersionUriSuffix() . $service[0];
+                $this->app->mount($serviceRoot, $api);
             }
         }
     }

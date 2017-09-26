@@ -11,12 +11,11 @@ namespace CWRest\Services;
 
 class WordlistWordService extends ServiceCustom
 {
-    protected $db;
-
     public function __construct($db)
     {
         parent::__construct($db);
-        $this->selectOneQuery = "SELECT * FROM wordlist_word wl INNER JOIN word w ON wl.word_id = w.id WHERE wl.wordlist_id = ? and w.id = ?";
-        $this->selectAllQuery = "SELECT * FROM wordlist_word wl INNER JOIN word w ON wl.word_id = w.id WHERE wl.wordlist_id = ?";
+        $this->table_name = "wordlist_word";
+        $this->selectOneQuery = "SELECT * FROM word w inner join wordlist_word wl on wl.word_id = w.id WHERE wl.wordlist_id = ? and w.id = ?";
+        $this->selectAllQuery = "SELECT * FROM word w inner join wordlist_word wl on wl.word_id = w.id WHERE wl.wordlist_id = ?";
     }
 }
