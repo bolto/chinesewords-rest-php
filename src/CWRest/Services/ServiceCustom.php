@@ -33,6 +33,17 @@ class ServiceCustom
         $this->db = $db;
     }
 
+    /**
+     * Making db available so controller can access it for customizing JSON output.  Note each controller is coupled
+     * with a service.  If controller needs to customize JSON output, for example, to add more data than the default
+     * query results, it can use the db to make additional queries and add them to returned JSON object.
+     *
+     * @return mixed
+     */
+    public function db()
+    {
+        return $this->db;
+    }
     public function getTableName()
     {
         if ($this->table_name == null || $this->table_name == ""){
