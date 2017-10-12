@@ -132,5 +132,13 @@ class RoutesLoader
                 $this->app->mount($serviceRoot, $api);
             }
         }
+        /**
+         * This is where special routings are done, for example, for some intersection tables
+         * like wordlist_word, a update isn't really wordlist/wordlistId/word/wordId
+         * because a wordlist can have repeated words, so using wordId to identify the intersection
+         * table will not work.  To update one entry in the interface table, we need the actual
+         * interface table id.  So here is where we will be creating api for wordlistword/wordlistWordId
+         * This way, we can properly locate the correct record and perform update.
+         */
     }
 }

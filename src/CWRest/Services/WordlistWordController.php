@@ -50,4 +50,10 @@ class WordlistWordController extends ControllerCustom
         }
         return new JsonResponse($wordlistWords);
     }
+    public function update($id, Request $request)
+    {
+        $object = $this->getDataFromRequest($request);
+        $this->dataService->update($id, $object);
+        return new JsonResponse($object);
+    }
 }
